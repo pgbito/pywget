@@ -3,6 +3,7 @@ from requests import get
 import re
 
 def handle_by_header(Content_Type_Header):
+    Content_Type_Header = Content_Type_Header.lower()
     if Content_Type_Header == 'audio/aac':
         return '.aac'
     elif Content_Type_Header == 'application/octet-stream':
@@ -29,6 +30,8 @@ def handle_by_header(Content_Type_Header):
         return '.html'
     elif Content_Type_Header == 'image/jpeg':
         return '.jpg'
+    elif Content_Type_Header == 'image/png':
+        return '.jpg'
     elif Content_Type_Header == 'application/javascript':
         return '.js'
     elif Content_Type_Header == 'application/json':
@@ -53,7 +56,9 @@ def handle_by_header(Content_Type_Header):
         return '.webm'
     elif Content_Type_Header == 'image/webp':
         return '.webp'
-    else: return '.misc'
+    else:
+     
+         return '.misc'
 def __getheaders__(url):
      return get(url=url).headers
 def __void__(a,e,i):
@@ -74,10 +79,11 @@ def wget(options,callback=__void__):
     if not '.' in File:
         h = __getheaders__(options['url'])
         fh = h.get('Content-Type')
+        
         hl = handle_by_header(fh)
         File = f'{File}{hl}'
 
-    if options.get('dest') is None: options['dest'] = './'
+    if options.get('dest') is None: options['dest'] = './'+ File
     if options['dest'][len(options['dest'])-1:1] =='/':
         options['dest'] = options['dest'] + File
     def handle_request_callback(err,res,body):
